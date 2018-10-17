@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/mui.picker.css" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.poppicker.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/selectKuwei.css"/>
+		<style>
+			ul {
+				font-size: 14px;
+				color: #8f8f94;
+			}
+			.rukumingxi{
+				margin: 1rem 0 1rem 0.9rem;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="padding-right: 15px;">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+				<span class="mui-icon mui-icon-left-nav"></span>
+			</button>
+			<h1 class="mui-title">灌包</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+			    <div class="mui-input-row">
+			        <label style="width:300px">小袋标签扫描：</label>
+			    </div>
+				<div class="mui-input-row">
+					<label>条码</label>
+					<input type="text" class="mui-input-clear" name="biaoqianS" id="biaoqianS" value=""/>
+				</div>
+			    <div class="mui-input-row">
+			    	<label>标签信息</label>
+			    </div>
+				<div id="rukuDataS">
+
+				</div>
+				<div class="mui-input-row">
+			    </div>
+				<div class="mui-input-row">
+			        <label style="width:300px">大袋标签扫描：</label>
+			    </div>
+				<div class="mui-input-row">
+					<label>条码</label>
+					<input type="text" class="mui-input-clear" name="biaoqianD" id="biaoqianD" value="" size="15"/>
+				</div>
+			    <div class="mui-input-row">
+			    	<label>标签信息</label>
+			    </div>
+				<div id="rukuDataD">
+
+				</div>
+			    <div class="mui-button-row">
+			        <button type="button" class="mui-btn mui-btn-primary" id="submit">确认完成</button>
+			    </div>
+			</form>
+		</div>
+		<script src="../config.js"></script>
+		<script src="../js/mui.js"></script>
+		<script type="text/javascript" src="../js/mui.picker.js"></script>
+		<script type="text/javascript" src="../js/mui.poppicker.js"></script>
+		<script type="text/javascript" src="../js/jquery.1.9.1.js"></script>
+		<script src="../js/app.js"></script>
+		<script>
+			mui.init();
+			var picker = new mui.PopPicker();
+	        document.getElementById('biaoqianS').addEventListener('keypress',function(e){
+	        	if(e.keyCode==13){
+	        		var biaoqianS=this.value.substr(0,this.value.length-1);
+					var juanArr=biaoqianS.split(',');
+					var len=juanArr.length;
+					var result=juanArr[len-1];
+					juanArr.pop();
+					var index=$.inArray(result,juanArr);
+					if(index>=0){
+						mui.alert('该标签已扫描');
+						this.value=juanArr.join(',')+',';
+						return ;
+					}				
+					var data=getSignData(result);
+					if(data){
+						doCodeData(data,'rukuDataS');
+					}
+	        	}
+		    });
+		    document.getElementById('biaoqianD').addEventListener('keypress',function(e){
+	        	if(e.keyCode==13){
+	        		var biaoqianD=this.value.substr(0,this.value.length-1);
+					var juanArr=biaoqianD.split(',');
+					var len=juanArr.length;
+					var result=juanArr[len-1];
+					juanArr.pop();
+					var index=$.inArray(result,juanArr);
+					if(index>=0){
+						mui.alert('该标签已扫描');
+						this.value=juanArr.join(',')+',';
+						return ;
+					}				
+					var data=getSignData(result);
+					if(data){
+						doCodeData(data,'rukuDataD');
+					}
+	        	}
+		    });
+			document.querySelector("#submit").addEventListener("tap",function(){
+				var biaoqianS=document.getElementById('biaoqianS').value;
+				var biaoqianD=document.getElementById('biaoqianD').value;
+				var juanArr=biaoqianD.split(',');
+				var len=juanArr.length;
+				console.log(len);
+				if(len>2){
+					mui.alert('大袋标签多于一个');
+					return ;
+				}
+	         	var submitinfo={biaoqianS:biaoqianS,biaoqianD:biaoqianD};
+				checkSaveByJuan(submitinfo, function(err) {
+					if (err) {
+						plus.nativeUI.toast(err);
+						return;
+					}
+				});
+			});
+			mui.plusReady(function(){
+				initdate('rukuDataS');
+				initdate('rukuDataD');
+			});
+			function doCodeData(data,rukuData)
+			{
+				var str='';
+				str='<div class="rukumingxi" id="'+data.id+'">订单号:<span class="orderCode">'+data.orderCode+'</span>,客户:<span class="compName">'+data.compName+'</span>,产品编号:<span class="proCode">'+data.proCode+'</span>,品名:<span class="proName">'+data.proName+'</span>,产品类型:<span class="proType">'+data.proType+'</span>,规格:<span class="guige">'+data.guige+'</span>,要货数:<span class="cnt">'+data.cnt+'</span>,包装类型:<span class="signKind">'+data.signKind+'</span>,总数:<span class="zong">'+data.zong+'</span></div>';
+				$('#'+rukuData).append(str);
+			}
+		</script>
+	</body>
+
+</html>

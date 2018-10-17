@@ -192,10 +192,10 @@ var getProductByproCode=function(proCode){
 	}
 	return data.params;
 }
-//通过条码值获取布卷信息
-var getMlData=function(codeId){
+//通过条码值获取标签信息
+var getSignData=function(codeId){
 	var arr={'token':config.token,codeId:codeId};
-	var data=request('POST',arr,config.apimethod.getMlData);
+	var data=request('POST',arr,config.apimethod.getSignData);
 	if(!data.success){
 		return false;
 	}
@@ -204,30 +204,21 @@ var getMlData=function(codeId){
 //卷验按卷入库提交
 var checkSaveByJuan=function(submitinfo,callback){
 	console.log(JSON.stringify(submitinfo));
-	if (submitinfo.rukuDate.length =='') {
-		return callback('请选择入库日期');
+	if (submitinfo.biaoqianS.length =='') {
+		return callback('请扫描小袋条码');
 	}
-	if (submitinfo.kuweiId.length =='') {
-		return callback('请选择仓库');
-	}
-	if (submitinfo.kuquId.length =='') {
-		return callback('请选择库位');
-	}
-	if (submitinfo.checkId.length =='') {
-		return callback('请扫描布卷');
+	if (submitinfo.biaoqianD.length =='') {
+		return callback('请扫描大袋条码');
 	}
 	var state = getState();
     var creater=state.account;
 	var arr={
-		'rukuDate':submitinfo.rukuDate,
-		'kuweiId':submitinfo.kuweiId,
-		'kuquId':submitinfo.kuquId,
-		'checkId':submitinfo.checkId,
-		'memo':submitinfo.memo,
-        'creater':creater,
+		'biaoqianS':submitinfo.biaoqianS,
+		'biaoqianD':submitinfo.biaoqianD,
+    'creater':creater,
 		'token':config.token
 	};
-	var data=request('POST',arr,config.apimethod.checkSaveByJuan);
+	var data=request('POST',arr,config.apimethod.checkSaveBySign);
 	if(!data.success){
 		return false;
 	}
