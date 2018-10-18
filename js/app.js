@@ -145,21 +145,21 @@ var getNowFormatDate= function() {
         return currentdate;
     }
 
-//获取面料仓库列表
-var getMlCangku=function(){
+//获取成品仓库列表
+var getCpCangku=function(){
 	var arr={'token':config.token};
-	var data=request('POST',arr,config.apimethod.getMlCangku);
+	var data=request('POST',arr,config.apimethod.getCpCangku);
 	return data.params;
 }
 //获取指定仓库对应的库区
-var getMlKuwei=function(cangkuId,page,searchKey){
+var getCpKuwei=function(cangkuId,page,searchKey){
 	var arr={
 		pageSize:config.pagesize,
 		page:page,
 		cangkuId:cangkuId,
 		token:config.token,
 		key:searchKey,
-		method:config.apimethod.getMlKuwei
+		method:config.apimethod.getCpKuwei
 	};
 	var data=requestData('GET',arr);
 	return data;
@@ -202,7 +202,7 @@ var getSignData=function(codeId){
 	return data.params;
 }
 //卷验按卷入库提交
-var checkSaveByJuan=function(submitinfo,callback){
+var checkSaveBySign=function(submitinfo,callback){
 	console.log(JSON.stringify(submitinfo));
 	if (submitinfo.biaoqianS.length =='') {
 		return callback('请扫描小袋条码');
@@ -226,9 +226,12 @@ var checkSaveByJuan=function(submitinfo,callback){
     location.reload();
 }
 //卷验按缸入库提交
-var checkSaveByGang=function(submitinfo,callback){
-	if (submitinfo.rukuDate.length =='') {
-		return callback('请选择入库日期');
+var checkSaveBySignB=function(submitinfo,callback){
+	if (submitinfo.biaoqianD.length =='') {
+		return callback('请扫描大袋条码');
+	}
+	if (submitinfo.biaoqianB.length =='') {
+		return callback('请扫描大包条码');
 	}
 	if (submitinfo.kuweiId.length =='') {
 		return callback('请选择仓库');
@@ -236,21 +239,17 @@ var checkSaveByGang=function(submitinfo,callback){
 	if (submitinfo.kuquId.length =='') {
 		return callback('请选择库位');
 	}
-	if (submitinfo.checkId.length =='') {
-		return callback('请扫描布卷');
-	}
 	var state = getState();
     var creater=state.account;
 	var arr={
-		'rukuDate':submitinfo.rukuDate,
+		'biaoqianD':submitinfo.biaoqianD,
+		'biaoqianB':submitinfo.biaoqianB,
 		'kuweiId':submitinfo.kuweiId,
 		'kuquId':submitinfo.kuquId,
-		'checkId':submitinfo.checkId,
-		'memo':submitinfo.memo,
-        'creater':creater,
+    'creater':creater,
 		'token':config.token
 	};
-	var data=request('POST',arr,config.apimethod.checkSaveByGang);
+	var data=request('POST',arr,config.apimethod.checkSaveBySignB);
 	if(!data.success){
 		return false;
 	}
@@ -720,7 +719,7 @@ var selectKuwei=function(){
 }
 var selectCangku=function(){
 	document.querySelector("#cangkuId").addEventListener("tap",function(){
-		picker.setData(getMlCangku());
+		picker.setData(getCpCangku());
   		picker.show(function(items){
         	document.getElementById('cangkuId').value=items[0].value;
         	document.getElementById('kuweiId').value=items[0].id;

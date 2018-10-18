@@ -26,36 +26,47 @@
 			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
 				<span class="mui-icon mui-icon-left-nav"></span>
 			</button>
-			<h1 class="mui-title">灌包</h1>
+			<h1 class="mui-title">打包登记</h1>
 		</header>
 		<div class="mui-content">
 			<form class="mui-input-group">
 			    <div class="mui-input-row">
-			        <label style="width:300px">小袋标签扫描：</label>
-			    </div>
-				<div class="mui-input-row">
-					<label>条码</label>
-					<input type="text" class="mui-input-clear" name="biaoqianS" id="biaoqianS" value=""/>
-				</div>
-			    <div class="mui-input-row">
-			    	<label>标签信息</label>
-			    </div>
-				<div id="rukuDataS">
-
-				</div>
-				<div class="mui-input-row">
-			    </div>
-				<div class="mui-input-row">
 			        <label style="width:300px">大袋标签扫描：</label>
 			    </div>
 				<div class="mui-input-row">
 					<label>条码</label>
-					<input type="text" class="mui-input-clear" name="biaoqianD" id="biaoqianD" value="" size="15"/>
+					<input type="text" class="mui-input-clear" name="biaoqianD" id="biaoqianD" value=""/>
 				</div>
 			    <div class="mui-input-row">
 			    	<label>标签信息</label>
 			    </div>
 				<div id="rukuDataD">
+
+				</div>
+				<div class="mui-input-row">
+			    </div>
+				<div class="mui-input-row">
+			        <label style="width:300px">大包标签扫描：</label>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>仓库类别</label>
+			        <input type="text" class="mui-input-clear" id="cangkuId"  placeholder="请选择仓库">
+			        <input type="hidden"  id="kuweiId" name="kuweiId" value="">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>库位</label>
+			        <input type="text" class="" id="kuquIds" placeholder="请选择库位" >
+			        <span class="mui-icon mui-icon-plus-filled" id="mui-icon-plus-filled"></span>
+			        <input type="hidden" name="kuquId" id="kuquId" />
+			    </div>
+				<div class="mui-input-row">
+					<label>条码</label>
+					<input type="text" class="mui-input-clear" name="biaoqianB" id="biaoqianB" value=""/>
+				</div>
+			    <div class="mui-input-row">
+			    	<label>标签信息</label>
+			    </div>
+				<div id="rukuDataB">
 
 				</div>
 			    <div class="mui-button-row">
@@ -72,25 +83,6 @@
 		<script>
 			mui.init();
 			var picker = new mui.PopPicker();
-	        document.getElementById('biaoqianS').addEventListener('keypress',function(e){
-	        	if(e.keyCode==13){
-	        		var biaoqianS=this.value.substr(0,this.value.length-1);
-					var juanArr=biaoqianS.split(',');
-					var len=juanArr.length;
-					var result=juanArr[len-1];
-					juanArr.pop();
-					var index=$.inArray(result,juanArr);
-					if(index>=0){
-						mui.alert('该标签已扫描');
-						this.value=juanArr.join(',')+',';
-						return ;
-					}				
-					var data=getSignData(result);
-					if(data){
-						doCodeData(data,'rukuDataS');
-					}
-	        	}
-		    });
 		    document.getElementById('biaoqianD').addEventListener('keypress',function(e){
 	        	if(e.keyCode==13){
 	        		var biaoqianD=this.value.substr(0,this.value.length-1);
@@ -110,18 +102,38 @@
 					}
 	        	}
 		    });
+		    document.getElementById('biaoqianB').addEventListener('keypress',function(e){
+	        	if(e.keyCode==13){
+	        		var biaoqianB=this.value.substr(0,this.value.length-1);
+					var juanArr=biaoqianB.split(',');
+					var len=juanArr.length;
+					var result=juanArr[len-1];
+					juanArr.pop();
+					var index=$.inArray(result,juanArr);
+					if(index>=0){
+						mui.alert('该标签已扫描');
+						this.value=juanArr.join(',')+',';
+						return ;
+					}				
+					var data=getSignData(result);
+					if(data){
+						doCodeData(data,'rukuDataB');
+					}
+	        	}
+		    });
 			document.querySelector("#submit").addEventListener("tap",function(){
-				var biaoqianS=document.getElementById('biaoqianS').value;
 				var biaoqianD=document.getElementById('biaoqianD').value;
-				var juanArr=biaoqianD.split(',');
+				var biaoqianB=document.getElementById('biaoqianB').value;
+				var kuweiId=document.getElementById('kuweiId').value;
+				var kuquId=document.getElementById('kuquId').value;
+				var juanArr=biaoqianB.split(',');
 				var len=juanArr.length;
-				console.log(len);
 				if(len>2){
-					mui.alert('大袋标签多于一个');
+					mui.alert('大包标签多于一个');
 					return ;
 				}
-	         	var submitinfo={biaoqianS:biaoqianS,biaoqianD:biaoqianD};
-				checkSaveByJuan(submitinfo, function(err) {
+	         	var submitinfo={biaoqianD:biaoqianD,biaoqianB:biaoqianB,kuweiId:kuweiId,kuquId:kuquId};
+				checkSaveBySignB(submitinfo, function(err) {
 					if (err) {
 						plus.nativeUI.toast(err);
 						return;
@@ -129,8 +141,8 @@
 				});
 			});
 			mui.plusReady(function(){
-				initdate('rukuDataS');
-				initdate('rukuDataD');
+				selectCangku();
+				selectKuwei();
 			});
 			function doCodeData(data,rukuData)
 			{

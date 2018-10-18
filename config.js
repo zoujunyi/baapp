@@ -27,6 +27,8 @@ var config = {
 		getMlKuweiById:"Cangku.getMlKuweiById",//根据库位id获取库位名称
 		getProductByproCode:"Cangku.getProductByproCode",//通过产品编码获取产品信息
 		getMlCangkuByUser:"Cangku.getMlCangkuByUser",//获取当前用户最后出入库的仓库id
+		getCpCangku:"Cangku.getCpCangku",//获取出入库仓库id
+		getCpKuwei:"Cangku.getCpKuwei",//获取出入库库位
 		getRcKuWeiByPlanId:"Cangku.getRcKuWeiByPlanId",//通过计划主表id获取染色仓库
 		
 		

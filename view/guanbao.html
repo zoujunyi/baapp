@@ -26,7 +26,7 @@
 			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
 				<span class="mui-icon mui-icon-left-nav"></span>
 			</button>
-			<h1 class="mui-title">灌包</h1>
+			<h1 class="mui-title">灌包登记</h1>
 		</header>
 		<div class="mui-content">
 			<form class="mui-input-group">
@@ -121,7 +121,7 @@
 					return ;
 				}
 	         	var submitinfo={biaoqianS:biaoqianS,biaoqianD:biaoqianD};
-				checkSaveByJuan(submitinfo, function(err) {
+				checkSaveBySign(submitinfo, function(err) {
 					if (err) {
 						plus.nativeUI.toast(err);
 						return;
@@ -129,8 +129,7 @@
 				});
 			});
 			mui.plusReady(function(){
-				initdate('rukuDataS');
-				initdate('rukuDataD');
+
 			});
 			function doCodeData(data,rukuData)
 			{

@@ -1,4 +1,4 @@
-﻿{
+{
     "@platforms": ["android", "iPhone", "iPad"],
     "id": "H5BE98152",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "baapp",/*应用名称，程序桌面图标名称*/
@@ -147,17 +147,14 @@
 					"view/setting.html",
 					"view/login.html",
 					"view/juanyan.html",
-					"view/BDlistAdd.html",
-					"view/AClistAdd.html",
 					"view/buInfo.html",
 					"view/juanyan-gang.html",
 					"view/XsCk-gang.html",
-					"view/AClistAdd-gang.html",
 					"view/huiliao.html",
 					"view/diaoku.html",
 					"view/XsCk.html",
-					"view/BDlistAdd-gang.html",
-					"view/guanbao.html"
+					"view/guanbao.html",
+					"view/dabao.html"
 				],
 				"priority": 0
 			},
@@ -232,7 +229,8 @@
 					"js/app.js"
 				],
 				"refer": [
-					"index.html"
+					"index.html",
+					"view/kuquSelect.html"
 				],
 				"priority": 0
 			},
@@ -342,7 +340,7 @@
 					"js/app.js"
 				],
 				"priority": 10
-			}	
+			}
 		},
 		"idle": {
 			"resources": [
