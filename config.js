@@ -10,7 +10,7 @@ var config = {
 		getSignData:'Cangku.getSignData',//通过条码值获取标签信息
 		checkSaveBySign:'Cangku.checkSaveBySign',//灌包标签保存
 		checkSaveBySignB:'Cangku.checkSaveBySignB',//打包标签保存
-		getMlDataChu:'Cangku.getMlDataChu',//通过卷号获取出库布卷信息
+		getCpDataChu:'Cangku.getCpDataChu',//通过标签获取出库布卷信息
 		getClothInfo:'Cangku.getClothInfo',//通过卷号获取布卷信息
 		suppierRc:'Cangku.suppierRc',//染厂加工户列表
 		getGangData:'Cangku.getGangData',//通过条码值获取整缸面料

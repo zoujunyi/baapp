@@ -268,12 +268,12 @@ var bdListAdd=function(page,searchKey){
 	var data=requestData('GET',arr);
 	return data;
 }
-var getMlDataChu=function(codeId){
+var getCpDataChu=function(codeId){
 	var arr={
 		codeId:codeId,
 		token:config.token
 	};
-	var data=request('POST',arr,config.apimethod.getMlDataChu);
+	var data=request('POST',arr,config.apimethod.getCpDataChu);
 	if(!data.success){
 		return false;
 	}
@@ -558,8 +558,8 @@ var XsCkSaveByJuan=function(submitInfo,callback){
 	if (submitInfo.ship_area.length =='') {
 		return callback('请选择发货区域');
 	}
-	if (submitInfo.madanId.length =='') {
-		return callback('请扫描布卷');
+	if (submitInfo.biaoqianId.length =='') {
+		return callback('请扫描标签');
 	}
 	var state = getState();
 	var creater=state.account;
@@ -568,7 +568,7 @@ var XsCkSaveByJuan=function(submitInfo,callback){
 		'kuweiId':submitInfo.kuweiId,
 		'shipping':submitInfo.shipping,
 		'productId':submitInfo.productId,
-		'madanId':submitInfo.madanId,
+		'biaoqianId':submitInfo.biaoqianId,
 		'memo':submitInfo.memo,
 		'corp_name':submitInfo.corp_name,
 		'logi_no':submitInfo.logi_no,
@@ -744,9 +744,8 @@ var showPopOver=function(){
 	 		var data=getProductByproCode(proCode);
 	 		var liStr='';
 			liStr+='<li class="mui-table-view-cell-tip">名称:'+data.proName+'</li>';
-			liStr+='<li class="mui-table-view-cell-tip">色号:'+data.color+'</li>';
-			liStr+='<li class="mui-table-view-cell-tip">门幅:'+data.menfu+'</li>';
-			liStr+='<li class="mui-table-view-cell-tip">克重:'+data.kezhong+'</li>';
+			liStr+='<li class="mui-table-view-cell-tip">规格:'+data.guige+'</li>';
+			liStr+='<li class="mui-table-view-cell-tip">颜色:'+data.color+'</li>';
 			$('.mui-table-view-tip').html(liStr);
 	 		mui('#sheet1').popover('toggle');
 	 	}

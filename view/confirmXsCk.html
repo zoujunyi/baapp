@@ -20,7 +20,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-		    <h1 class="mui-title">扫码出库--按卷</h1>
+		    <h1 class="mui-title">扫码出库</h1>
 		</header>
 		<div class="mui-content">
 			<form class="mui-input-group">
@@ -67,7 +67,7 @@
 			    <div class="mui-input-row">
 					<label>条码</label>
 					<input type="text" class="mui-input-clear" name="juanhao" id="juanhao" value=""/>
-					<input type="hidden"  name="madanId" id="madanId" value=""/>
+					<input type="hidden"  name="biaoqianId" id="biaoqianId" value=""/>
 				</div>
 			    <div class="mui-input-row">
 			    	<label for="">出库信息</label>
@@ -129,14 +129,19 @@
 					juanArr.pop();
 					var index=$.inArray(result,juanArr);
 					if(index>=0){
-						mui.alert('该布卷已扫描');
+						mui.alert('该成品已扫描');
 						this.value=juanArr.join(',')+',';
 						return ;
 					}
-					var data=getMlDataChu(result);
+					var data=getCpDataChu(result);
 					if(data){
 						if(data.productId !=document.getElementById('productId').value){
 			        		mui.alert('产品编码不一致');
+			        		this.value=juanArr.join(',')+',';
+			        		return ;
+			        	}
+						if(data.orderId !=document.getElementById('orderId').value){
+			        		mui.alert('订单号不一致');
 			        		this.value=juanArr.join(',')+',';
 			        		return ;
 			        	}
@@ -155,10 +160,10 @@
 	         	var ship_area=document.getElementById('ship_area').value;
 	         	var productId=document.getElementById('productId').value;
 	         	var clientId=document.getElementById('clientId').value;
-	         	var madanId=document.getElementById('madanId').value;
+	         	var biaoqianId=document.getElementById('biaoqianId').value;
 	         	var memo=document.getElementById('memo').value;
 	         	var orderId=document.getElementById('orderId').value;
-	         	var submitinfo={chukuDate:chukuDate,kuweiId:kuweiId,shipping:shipping,madanId:madanId,corp_name:corp_name,logi_no:logi_no,ship_area:ship_area,productId:productId,clientId:clientId,memo:memo,orderId:orderId};
+	         	var submitinfo={chukuDate:chukuDate,kuweiId:kuweiId,shipping:shipping,biaoqianId:biaoqianId,corp_name:corp_name,logi_no:logi_no,ship_area:ship_area,productId:productId,clientId:clientId,memo:memo,orderId:orderId};
 	         	XsCkSaveByJuan(submitinfo, function(err) {
 					if (err) {
 						plus.nativeUI.toast(err);
@@ -180,26 +185,11 @@
 			});
 			function doCodeData(data){
 				console.log(JSON.stringify(data));
-				var madanId=document.getElementById('madanId').value;
-				document.getElementById('madanId').value=madanId+data.id+',';
-				//判断之前的扫描结果有没有同缸号的，
-				var id=document.getElementById(data.ganghao);
+				var biaoqianId=document.getElementById('biaoqianId').value;
+				document.getElementById('biaoqianId').value=biaoqianId+data.biaoqianId+',';
 				var str='';
-				if(id!=null){
-					var elelenth=id.getElementsByClassName('length')[0];
-					var eleweight=id.getElementsByClassName('weight')[0];
-					var elejuan=id.getElementsByClassName('juan')[0];
-					var length=parseFloat(elelenth.innerHTML)+parseFloat(data.cntL);
-					var weight=parseFloat(eleweight.innerHTML)+parseFloat(data.cnt);
-					var juan=parseInt(elejuan.innerHTML)+1;
-					elelenth.innerHTML=length;
-					eleweight.innerHTML=weight;
-					elejuan.innerHTML=juan;
-				}else{
-					str='<div class="mui-input-row rukumingxi" id="'+data.ganghao+'">缸号:<span class="ganghao">'+data.ganghao+'</span>,长度:<span class="length">'+data.cntL+'</span>,重量:<span class="weight">'+data.cnt+'</span>,卷数:<span class="juan">1</span></div>';
-					console.log(str);
-					$('#chukuData').append(str);
-				}
+				str='<div class="rukumingxi" id="'+data.biaoqianId+'">订单号:<span class="orderCode">'+data.orderCode+'</span>,客户:<span class="compName">'+data.compName+'</span>,产品编号:<span class="productId">'+data.productId+'</span>,品名:<span class="proName">'+data.proName+'</span>,产品类型:<span class="proType">'+data.proType+'</span>,规格:<span class="guige">'+data.guige+'</span>,要货数:<span class="cnt">'+data.cnt+'</span>,包装类型:<span class="signKind">'+data.signKind+'</span>,总数:<span class="zong">'+data.zong+'</span></div>';
+				$('#chukuData').append(str);
 			}
 		</script>
 		
