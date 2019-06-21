@@ -74,6 +74,7 @@
 			var picker = new mui.PopPicker();
 	        document.getElementById('biaoqianS').addEventListener('keypress',function(e){
 	        	if(e.keyCode==13){
+	        		this.value += ',';
 	        		var biaoqianS=this.value.substr(0,this.value.length-1);
 					var juanArr=biaoqianS.split(',');
 					var len=juanArr.length;
@@ -84,7 +85,7 @@
 						mui.alert('该标签已扫描');
 						this.value=juanArr.join(',')+',';
 						return ;
-					}				
+					}
 					var data=getSignData(result);
 					if(data){
 						doCodeData(data,'rukuDataS');
@@ -93,6 +94,7 @@
 		    });
 		    document.getElementById('biaoqianD').addEventListener('keypress',function(e){
 	        	if(e.keyCode==13){
+	        		this.value += ',';
 	        		var biaoqianD=this.value.substr(0,this.value.length-1);
 					var juanArr=biaoqianD.split(',');
 					var len=juanArr.length;

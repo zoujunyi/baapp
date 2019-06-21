@@ -53,12 +53,6 @@
 			        <input type="text" class="mui-input-clear" id="cangkuId"  placeholder="请选择仓库">
 			        <input type="hidden"  id="kuweiId" name="kuweiId" value="">
 			    </div>
-			    <div class="mui-input-row">
-			        <label>库位</label>
-			        <input type="text" class="" id="kuquIds" placeholder="请选择库位" >
-			        <span class="mui-icon mui-icon-plus-filled" id="mui-icon-plus-filled"></span>
-			        <input type="hidden" name="kuquId" id="kuquId" />
-			    </div>
 				<div class="mui-input-row">
 					<label>条码</label>
 					<input type="text" class="mui-input-clear" name="biaoqianB" id="biaoqianB" value=""/>
@@ -85,6 +79,7 @@
 			var picker = new mui.PopPicker();
 		    document.getElementById('biaoqianD').addEventListener('keypress',function(e){
 	        	if(e.keyCode==13){
+	        		this.value += ',';
 	        		var biaoqianD=this.value.substr(0,this.value.length-1);
 					var juanArr=biaoqianD.split(',');
 					var len=juanArr.length;
@@ -104,6 +99,7 @@
 		    });
 		    document.getElementById('biaoqianB').addEventListener('keypress',function(e){
 	        	if(e.keyCode==13){
+	        		this.value += ',';
 	        		var biaoqianB=this.value.substr(0,this.value.length-1);
 					var juanArr=biaoqianB.split(',');
 					var len=juanArr.length;
@@ -125,14 +121,13 @@
 				var biaoqianD=document.getElementById('biaoqianD').value;
 				var biaoqianB=document.getElementById('biaoqianB').value;
 				var kuweiId=document.getElementById('kuweiId').value;
-				var kuquId=document.getElementById('kuquId').value;
 				var juanArr=biaoqianB.split(',');
 				var len=juanArr.length;
 				if(len>2){
 					mui.alert('大包标签多于一个');
 					return ;
 				}
-	         	var submitinfo={biaoqianD:biaoqianD,biaoqianB:biaoqianB,kuweiId:kuweiId,kuquId:kuquId};
+	         	var submitinfo={biaoqianD:biaoqianD,biaoqianB:biaoqianB,kuweiId:kuweiId};
 				checkSaveBySignB(submitinfo, function(err) {
 					if (err) {
 						plus.nativeUI.toast(err);
