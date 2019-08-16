@@ -236,9 +236,6 @@ var checkSaveBySignB=function(submitinfo,callback){
 	if (submitinfo.kuweiId.length =='') {
 		return callback('请选择仓库');
 	}
-	if (submitinfo.kuquId.length =='') {
-		return callback('请选择库位');
-	}
 	var state = getState();
     var creater=state.account;
 	var arr={

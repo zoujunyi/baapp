@@ -1,5 +1,5 @@
 var config = {
- 	server: 'http://192.168.1.88/fangzhi-beian/api.php',
+ 	server: 'http://192.168.1.5/fangzhi-beian/api.php',
  	token:'608e870bde43bbb273807f5bee766f8f',
 	apiname: 'topapi', //系统配置的api名称
 	pagesize: 20, // 分页组件每页显示数量
